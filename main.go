@@ -2,23 +2,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"time"
 )
 
 func main() {
-	s := time.Now()
+	now := time.Now()
 
-	var builder strings.Builder
+	tz, _ := time.LoadLocation("America/Los_Angeles")
+	future := time.Date(2015, time.October, 21, 7, 28, 0, 0, tz)
 
-	builder.Grow(10000)
-
-	builder.WriteByte('a')
-
-	for i := 0; i < 10000; i++ {
-		builder.WriteByte('b')
-	}
-
-	fmt.Printf("%s\n", builder.String())
-	fmt.Printf("process time: %s\n", time.Since(s))
+	fmt.Println(now.String())
+	fmt.Println(future.Format(time.RFC3339Nano))
 }
