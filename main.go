@@ -1,25 +1,31 @@
 package main
 
-import (
-	"fmt"
-	"io"
-	"net/http"
-	"os"
+import "fmt"
 
-	"github.com/rs/zerolog/log"
+type Portion int
+
+const (
+	Regular Portion = iota
+	Small
+	Large
 )
 
-func main() {
-	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "hello")
-		log.Info().Msg("receive hello")
-	})
+type Udon struct {
+	men      Portion
+	aburaage bool
+	ebiten   uint
+}
 
-	fmt.Println("start :8080")
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "")
-		io.WriteString(os.Stderr, err.Error())
-		os.Exit(1)
+func NewUdon(p Portion, aburaage bool, ebiten uint) *Udon {
+	return &Udon{
+		men:      p,
+		aburaage: aburaage,
+		ebiten:   ebiten,
 	}
+}
+
+func main() {
+	t := NewUdon(Regular, false, 2)
+
+	fmt.Println(t)
 }
