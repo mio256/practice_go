@@ -1,20 +1,25 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+
+	"github.com/rs/zerolog/log"
+)
 
 func main() {
-	response_code := map[int]string{
-		200: "OK",
-		201: "Created",
-		400: "Bad Request",
-		403: "Forbidden",
-		404: "Not Found",
-		500: "Internal Server Error",
-	}
+	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "hello")
+		log.Info().Msg("receive hello")
+	})
 
-	fmt.Printf("%v\n", response_code)
-
-	for k, v := range response_code {
-		fmt.Printf("%d : %s\n", k, v)
+	fmt.Println("start :8080")
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "")
+		io.WriteString(os.Stderr, err.Error())
+		os.Exit(1)
 	}
 }
